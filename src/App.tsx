@@ -98,7 +98,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Some word game</h1>
+      <h1>Some Word Game</h1>
 
       <div className="main-wrapper">
         <form
