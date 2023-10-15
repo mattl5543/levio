@@ -12,6 +12,18 @@
   }
 }
 
+@keyframes unroll {
+  0% {
+    height: 0;
+    background-color: $success-color;
+  }
+
+  100% {
+    height: 35px;
+    background-color: transparent;
+  }
+}
+
 @keyframes shake {
   0%,
   100% {

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { LevenshteinDistance } from "./Lev";
 import { GuessStoreHelper } from "./Helpers/GuessStore";
 import { GameHelper } from "./Helpers/GameHelper";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { IconButton, Tooltip } from "@mui/material";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 function App() {
   const [currentInput, setCurrentInput] = useState<string>("");
@@ -35,6 +35,7 @@ function App() {
     setLastWord(guess.value);
 
     if (!alreadyGuessed) {
+      setAlreadyGuessed("");
       GuessStoreHelper.storeGuess(gameId, guess);
       setGuesses((prev) => {
         return [...prev, guess];
@@ -54,16 +55,18 @@ function App() {
           handleSubmit();
         }}
       >
-        <TextField
-          id="outlined-basic"
-          inputProps={{ inputMode: "text", pattern: '"[a-zA-Z]+"' }}
+        <input
+          className="guess-input"
+          type="text"
+          pattern="[a-zA-Z]+"
           required
-          variant="outlined"
           onChange={(ev) => {
             setCurrentInput(ev.target.value);
           }}
         />
-        <Button variant="contained">Guess</Button>
+        <button className="guess-button" type="submit">
+          Guess
+        </button>
       </form>
 
       <div className="current-container">
@@ -72,10 +75,14 @@ function App() {
             <span className="last-word">{lastWord}</span> is{" "}
             <span className="distance">{distance}</span> operations away from
             the answer.
-            <div>
-              An operation can be either adding, removing or replacing a letter
-              in the word.
-            </div>
+            <Tooltip
+              title="An operation can be either adding, removing or replacing a letter
+              in the word."
+            >
+              <IconButton>
+                <HelpOutlineIcon />
+              </IconButton>
+            </Tooltip>
           </>
         )}
       </div>
@@ -94,6 +101,10 @@ function App() {
                         alreadyGuessed.toLowerCase() ==
                         guess.value.toLowerCase()
                           ? " already-guessed"
+                          : ""
+                      } ${
+                        lastWord.toLowerCase() == guess.value.toLowerCase()
+                          ? " last-guess"
                           : ""
                       }`}
                     >
