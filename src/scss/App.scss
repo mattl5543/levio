@@ -9,6 +9,13 @@ body {
   box-sizing: border-box;
 }
 
+a {
+  color: #111;
+  &:visited {
+    color: #111;
+  }
+}
+
 .App {
   text-align: center;
   position: relative;
@@ -30,6 +37,7 @@ body {
     .footer-info {
       flex-grow: 9;
       font-size: 12px;
+      vertical-align: middle;
     }
 
     .footer-options {

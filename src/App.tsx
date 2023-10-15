@@ -6,6 +6,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 function App() {
   const [currentInput, setCurrentInput] = useState<string>("");
@@ -135,7 +136,8 @@ function App() {
         <div className="current-container">
           {lastWord && winState && (
             <div className="winning-guess">
-              <span className="last-word">{lastWord}</span> is the answer!
+              <span className="last-word">{lastWord}</span> is the answer! You
+              did it in {guesses.length} guesses!
             </div>
           )}
           {lastWord && !winState && (
@@ -207,7 +209,12 @@ function App() {
       </div>
 
       <div className="footer">
-        <div className="footer-info">Game ID: {gameId}</div>
+        <div className="footer-info">
+          <a href="https://github.com/mattl5543/levio" target="_blank">
+            <GitHubIcon />
+          </a>{" "}
+          - Game ID: {gameId}
+        </div>
         <div className="footer-options">
           <Button
             variant="contained"
