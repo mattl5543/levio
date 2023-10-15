@@ -13,99 +13,151 @@ body {
 
 .App {
   text-align: center;
+  position: relative;
+  margin-bottom: 100px;
 
   .footer {
+    display: flex;
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
+    height: 60px;
     padding: 10px;
     background-color: $primary-accent;
-
-    .game-id {
-      float: left;
-    }
-  }
-}
-
-.App .game-options {
-  float: right;
-  margin-right: 20px;
-}
-
-.word-input {
-  .guess-input {
-    padding: 15px;
-    font-size: 30px;
-    border: 1px solid $secondary-accent;
-    border-radius: 20px 0 0 20px;
-    border-right: 0;
-  }
-
-  .guess-button {
-    padding: 15px;
-    font-size: 30px;
-    background-color: $secondary-color;
-    border: 1px solid $secondary-accent;
-    border-radius: 0 20px 20px 0;
-    border-left: 0;
-  }
-}
-
-.current-container {
-  padding: 10px;
-  .last-word {
-    text-transform: capitalize;
-    font-size: 1.5em;
-  }
-  .distance {
-    font-weight: bold;
-  }
-}
-
-.guess-container {
-  display: inline-block;
-  text-align: left;
-  width: 400px;
-
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .guess {
-    padding-left: 8px;
-    padding-right: 8px;
-    margin-bottom: 2px;
-    border-bottom: 1px solid $secondary-accent;
-    border-radius: 20px;
-    line-height: 35px;
+    text-align: left;
+    align-items: center;
     box-sizing: border-box;
-    overflow: hidden;
 
-    div {
-      display: inline-block;
+    .footer-info {
+      flex-grow: 9;
+      font-size: 12px;
     }
 
-    &.last-guess {
-      animation: 1s ease unroll;
+    .footer-options {
+      flex-grow: 1;
+      text-align: right;
+      margin-right: 20px;
+
+      button {
+        margin-left: 10px;
+        background-color: $secondary-accent;
+      }
     }
   }
 
-  .guess-distance {
-    float: right;
-    font-weight: bold;
-    text-align: right;
+  .hinter-wrapper {
+    position: fixed;
+    bottom: 60px;
+  }
+}
+
+.main-wrapper {
+  max-width: 600px;
+  width: 90vw;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+
+  .word-input {
+    display: flex;
+    width: 100%;
+
+    .guess-input {
+      flex-grow: 1;
+      padding: 15px;
+      font-size: 30px;
+      border: 1px solid $secondary-accent;
+      border-radius: 20px 0 0 20px;
+      border-right: 0;
+    }
+
+    .guess-button {
+      padding: 15px;
+      font-size: 30px;
+      background-color: $secondary-color;
+      border: 1px solid $secondary-accent;
+      border-radius: 0 20px 20px 0;
+      border-left: 0;
+      width: auto;
+    }
   }
 
-  .guess-value {
-    text-transform: capitalize;
+  .current-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    .last-word {
+      text-transform: capitalize;
+      font-size: 1.5em;
+    }
+    .distance {
+      font-weight: bold;
+    }
   }
 
-  .guess {
-    &.already-guessed {
-      border: 3px solid $danger-color;
-      animation: 0.5s ease shake;
+  .guess-container {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+
+    h3 {
+      margin: 10px 0 10px 0;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      margin-top: 10px;
+    }
+
+    .guess {
+      flex-grow: 1;
+      margin-left: 16px;
+      margin-right: 16px;
+      margin-bottom: 2px;
+      padding-left: 8px;
+      padding-right: 8px;
+      border-bottom: 1px solid $primary-accent;
+      line-height: 35px;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      div {
+        display: inline-block;
+      }
+
+      &.last-guess {
+        animation: 1s ease unroll;
+      }
+
+      &:last-of-type {
+        margin-bottom: 20px;
+      }
+    }
+
+    .guess-distance {
+      float: right;
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .guess-value {
+      text-transform: capitalize;
+    }
+
+    .guess {
+      &.already-guessed {
+        border: 3px solid $danger-color;
+        animation: 0.5s ease shake;
+      }
     }
   }
 }
