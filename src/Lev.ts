@@ -37,9 +37,9 @@ export const LevenshteinDistance = (
   // Calculate distance
   for (let j = 1; j <= targetSplit.length; j++) {
     for (let i = 1; i <= sourceSplit.length; i++) {
-      let subCost = 1;
-      if (sourceSplit[i - 1] == targetSplit[j - 1]) {
-        subCost = 0;
+      let subCost = 0;
+      if (sourceSplit[i - 1] !== targetSplit[j - 1]) {
+        subCost = 1;
       }
 
       const removeCost = levMatrix[i - 1][j] + 1;

@@ -2,17 +2,9 @@ import React, { useEffect, useState } from "react";
 import { LevenshteinDistance } from "./Lev";
 import { GuessStoreHelper } from "./Helpers/GuessStore";
 import { GameHelper } from "./Helpers/GameHelper";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SendIcon from "@mui/icons-material/Send";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 
 function App() {
@@ -33,6 +25,18 @@ function App() {
     GuessStoreHelper.getAllGuesses(gameId)
   );
 
+  const reset = () => {
+    setCurrentInput("");
+    setLastWord("");
+    setDistance(undefined);
+    setWinState(false);
+    setHint("");
+    setShowHint(false);
+    setAlreadyGuessed("");
+    setGuesses([]);
+    GuessStoreHelper.clearAll();
+  };
+
   const handleSubmit = () => {
     const currentDistance = LevenshteinDistance(currentInput, todaysWord);
     console.log(currentDistance);
@@ -48,7 +52,7 @@ function App() {
     }
 
     const alreadyGuessed = guesses.find(
-      (o) => o.value.toLowerCase() == guess.value.toLowerCase()
+      (o) => o.value.toLowerCase() === guess.value.toLowerCase()
     );
 
     setDistance(guess.distance);
@@ -67,18 +71,30 @@ function App() {
   };
 
   useEffect(() => {
+    const guesses = GuessStoreHelper.getAllGuesses(gameId);
+    const winCheck = guesses.find((o) => o.distance === 0);
+    setWinState(!!winCheck);
+
+    const lastGuess = guesses[guesses.length - 1];
+    if (!lastGuess) return;
+    setDistance(lastGuess.distance);
+    setLastWord(lastGuess.value);
+    setCurrentInput("");
+  }, [gameId]);
+
+  useEffect(() => {
     if (lastWord.length < todaysWord.length) {
       setHint("You are missing some letters");
     }
     if (lastWord.length > todaysWord.length) {
       setHint("Your word has too many letters");
     }
-    if (lastWord.length == todaysWord.length) {
+    if (lastWord.length === todaysWord.length) {
       setHint(
-        `Your word is the correct length but ${distance} letters are incorrect`
+        `Your word is the correct length but ${distance} letter(s) are either incorrect or in the wrong position`
       );
     }
-  }, [lastWord]);
+  }, [lastWord, distance, todaysWord]);
 
   return (
     <div className="App">
@@ -93,8 +109,10 @@ function App() {
           }}
         >
           <input
+            disabled={winState}
             className="guess-input"
             type="text"
+            placeholder="Type a word"
             pattern="[a-zA-Z]+"
             required
             value={currentInput}
@@ -104,6 +122,7 @@ function App() {
           />
 
           <Button
+            disabled={winState}
             variant="contained"
             disableElevation
             className="guess-button"
@@ -115,24 +134,40 @@ function App() {
 
         <div className="current-container">
           {lastWord && winState && (
-            <>
+            <div className="winning-guess">
               <span className="last-word">{lastWord}</span> is the answer!
-            </>
+            </div>
           )}
           {lastWord && !winState && (
-            <>
-              <span className="last-word">{lastWord}</span> is{" "}
-              <span className="distance">{distance}</span> operations away from
-              the answer.
-              <Tooltip
-                title="An operation can be either adding, removing or replacing a letter
+            <div className="incorrect-guess">
+              <div className="guess-description">
+                <span className="last-word">{lastWord}</span> is{" "}
+                <span className="distance">{distance}</span> operations away
+                from the answer.
+                <Tooltip
+                  title="An operation can be either adding, removing or replacing a letter
               in the word."
-              >
-                <IconButton>
-                  <HelpOutlineIcon />
-                </IconButton>
-              </Tooltip>
-            </>
+                >
+                  <IconButton>
+                    <HelpOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+
+              <div className="guess-options">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    setShowHint(!showHint);
+                  }}
+                >
+                  {showHint ? "Hide Hint" : "Show Hint"}
+                </Button>
+              </div>
+
+              {showHint && <div>{hint}</div>}
+            </div>
           )}
         </div>
 
@@ -148,19 +183,19 @@ function App() {
                       <li
                         key={guess.value}
                         className={`guess ${
-                          alreadyGuessed.toLowerCase() ==
+                          alreadyGuessed.toLowerCase() ===
                           guess.value.toLowerCase()
                             ? " already-guessed"
                             : ""
                         } ${
-                          lastWord.toLowerCase() == guess.value.toLowerCase()
+                          lastWord.toLowerCase() === guess.value.toLowerCase()
                             ? " last-guess"
                             : ""
                         }`}
                       >
                         <div className={`guess-value`}>{guess.value}</div>
                         <div className="guess-distance">
-                          {guess.distance == 0 ? "WINNER" : guess.distance}
+                          {guess.distance === 0 ? "WINNER" : guess.distance}
                         </div>
                       </li>
                     );
@@ -176,20 +211,12 @@ function App() {
         <div className="footer-options">
           <Button
             variant="contained"
+            color="secondary"
             onClick={() => {
-              GuessStoreHelper.clearAll();
-              setGuesses([]);
+              reset();
             }}
           >
-            Clear Guesses
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setShowHint(!showHint);
-            }}
-          >
-            {showHint ? hint : "Show Hint"}
+            Reset Game
           </Button>
         </div>
       </div>

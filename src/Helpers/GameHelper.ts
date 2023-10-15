@@ -1,4 +1,4 @@
-import WordLibrary from "../words-ai.json";
+import WordLibrary from "../words.json";
 
 export class GameHelper {
   private static START_OF_TIME = new Date("1997-03-14");

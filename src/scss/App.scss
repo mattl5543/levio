@@ -37,11 +37,9 @@ body {
     .footer-options {
       flex-grow: 1;
       text-align: right;
-      margin-right: 20px;
 
       button {
         margin-left: 10px;
-        background-color: $secondary-accent;
       }
     }
   }
@@ -86,13 +84,26 @@ body {
   }
 
   .current-container {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     text-align: left;
+
+    .winning-guess {
+      text-align: center;
+    }
+
+    .incorrect-guess {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
     .last-word {
       text-transform: capitalize;
       font-size: 1.5em;
     }
+
     .distance {
       font-weight: bold;
     }
@@ -125,7 +136,6 @@ body {
       margin-bottom: 2px;
       padding-left: 8px;
       padding-right: 8px;
-      border-bottom: 1px solid $primary-accent;
       line-height: 35px;
       box-sizing: border-box;
       overflow: hidden;
