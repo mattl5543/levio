@@ -1,8 +1,5 @@
 interface LevenshteinResponse {
   distance: number;
-  removals: number;
-  additions: number;
-  substitutions: number;
 }
 
 export const LevenshteinDistance = (
@@ -12,10 +9,6 @@ export const LevenshteinDistance = (
   // Set up
   const sourceSplit = source.toLowerCase().split("");
   const targetSplit = target.toLowerCase().split("");
-
-  let removals = 0;
-  let additions = 0;
-  let substitutions = 0;
 
   // Create base matrix
   const levMatrix: Array<Array<number>> = [];
@@ -47,18 +40,6 @@ export const LevenshteinDistance = (
       const totalSubCost = levMatrix[i - 1][j - 1] + subCost;
       const cost = Math.min(removeCost, insertCost, totalSubCost);
 
-      switch (cost) {
-        case totalSubCost:
-          substitutions = cost;
-          break;
-        case insertCost:
-          additions = cost;
-          break;
-        case removeCost:
-          removals = cost;
-          break;
-      }
-
       levMatrix[i][j] = cost;
     }
   }
@@ -66,10 +47,5 @@ export const LevenshteinDistance = (
   // Last entry in the matrix is the distance
   return {
     distance: levMatrix[sourceSplit.length][targetSplit.length],
-    removals: removals,
-    additions: additions,
-    substitutions: substitutions,
   };
 };
-
-// export const LevenshteinSimilarityPercent = (source: string, )
